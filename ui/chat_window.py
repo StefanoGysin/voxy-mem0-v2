@@ -87,7 +87,8 @@ class MessageWorker(QObject):
                 if i % 5 == 0:  # Atualiza a cada 5%
                     self.progress_update.emit(i)
             
-            # Processa a mensagem
+            # A mensagem agora é o histórico completo de mensagens
+            # Não precisamos criar uma nova lista
             response = self.memory_manager.process_message(self.message, self.user_id)
             
             # Emite a resposta completa com memórias
@@ -773,7 +774,8 @@ class ChatWindow(QMainWindow):
         self.progress_bar.setVisible(True)
         
         # Define a mensagem para o worker e inicia a thread
-        self.message_worker.set_message(message)
+        # Passamos o histórico completo de mensagens, incluindo a nova mensagem do usuário
+        self.message_worker.set_message(self._message_history)
         if not self.message_thread.isRunning():
             self.message_thread.start()
         else:
@@ -1147,8 +1149,8 @@ class ChatWindow(QMainWindow):
     
     def closeEvent(self, event):
         """Manipula o evento de fechamento da janela"""
-        # Finaliza a thread de mensagens
-        if self.message_thread.isRunning():
+        # Finaliza a thread de mensagens se existir
+        if hasattr(self, 'message_thread') and self.message_thread.isRunning():
             self.message_thread.quit()
             self.message_thread.wait()
         
