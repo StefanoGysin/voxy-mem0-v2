@@ -1,4 +1,4 @@
-# Voxy-Mem0-v2: Assistente com Memória Vetorial e Interface Gráfica
+# Voxy-Mem0-v3: Assistente com Memória Vetorial e Interface Gráfica
 
 ![Versão](https://img.shields.io/badge/versão-2.3.0-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.12%2B-green.svg)
@@ -7,7 +7,7 @@
 
 ## 📋 Visão Geral
 
-Voxy-Mem0-v2 é uma evolução do assistente conversacional Voxy-Mem0, agora com uma moderna interface gráfica construída com PyQt6 e sistema de autenticação integrado. Desenvolvido com a biblioteca [Mem0ai](https://github.com/mem0ai/mem0) e integrado com a API da OpenAI e banco de dados Supabase, este assistente oferece uma experiência de conversação personalizada ao lembrar conversas anteriores, preferências e informações contextuais dos usuários.
+Voxy-Mem0-v3 é uma evolução avançada do assistente conversacional Voxy-Mem0, com interface gráfica moderna construída com PyQt6 e sistema de autenticação integrado com Supabase. Desenvolvido com a biblioteca [Mem0ai](https://github.com/mem0ai/mem0) e integrado com a API da OpenAI, este assistente oferece uma experiência de conversação personalizada ao armazenar e recuperar conversas anteriores em uma memória vetorial persistente.
 
 ## ✨ Funcionalidades
 
@@ -26,12 +26,14 @@ Voxy-Mem0-v2 é uma evolução do assistente conversacional Voxy-Mem0, agora com
 ## 🛠️ Requisitos de Sistema
 
 ### Requisitos de Hardware
+
 - **Processador**: 2 GHz dual-core ou superior
 - **Memória RAM**: Mínimo 4 GB (8 GB recomendado)
 - **Armazenamento**: 200 MB disponíveis para a aplicação e dependências
 - **Conexão com Internet**: Obrigatória para comunicação com as APIs
 
 ### Requisitos de Software
+
 - **Sistema Operacional**:
   - Windows 10/11
   - macOS 10.15 (Catalina) ou superior
@@ -47,9 +49,9 @@ Voxy-Mem0-v2 é uma evolução do assistente conversacional Voxy-Mem0, agora com
 
 #### OpenAI API
 1. Crie uma conta em [platform.openai.com](https://platform.openai.com) se ainda não tiver
-2. Navegue até a seção "API keys" no painel
-3. Clique em "Create new secret key"
-4. Copie a chave gerada (você não poderá vê-la novamente depois)
+2. Navegue até "API keys" no painel e clique em "Create new secret key"
+3. Dê um nome descritivo à sua chave (ex: "Voxy-Mem0")
+4. Copie a chave gerada imediatamente (você não poderá vê-la novamente depois)
 
 #### Supabase
 1. Crie uma conta em [supabase.com](https://supabase.com) se ainda não tiver
@@ -59,32 +61,51 @@ Voxy-Mem0-v2 é uma evolução do assistente conversacional Voxy-Mem0, agora com
 5. Ative a extensão pgvector:
    - Navegue até "Database" > "Extensions"
    - Pesquise por "vector" e ative a extensão "pgvector"
+   - Ou use o SQL Editor e execute: `CREATE EXTENSION IF NOT EXISTS vector;`
 
 ### 2. Clone o Repositório
 
 ```bash
-git clone https://github.com/SeuUsuario/voxy-mem0-v2.git
-cd voxy-mem0-v2
+git clone https://github.com/SeuUsuario/voxy-mem0-v3.git
+cd voxy-mem0-v3
 ```
 
 ### 3. Configure o Ambiente Virtual
 
+É essencial criar um ambiente virtual para isolar as dependências do projeto.
+
 #### No Windows:
+**PowerShell:**
 ```powershell
 # Criar ambiente virtual
 python -m venv .venv
 
-# Ativar ambiente virtual (PowerShell)
-.\.venv\Scripts\Activate.ps1
+# Ativar ambiente virtual
+.\.venv\Scripts\Activate
 
-# Ou se estiver usando o CMD
-# .\.venv\Scripts\activate.bat
+# Se estiver usando PowerShell e receber erro de política de execução:
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-#### No macOS/Linux:
+**Prompt de Comando (CMD):**
+```cmd
+python -m venv .venv
+.\.venv\Scripts\activate.bat
+```
+
+#### No macOS:
 ```bash
 # Criar ambiente virtual
-python -m venv .venv
+python3 -m venv .venv
+
+# Ativar ambiente virtual
+source .venv/bin/activate
+```
+
+#### No Linux:
+```bash
+# Criar ambiente virtual
+python3 -m venv .venv
 
 # Ativar ambiente virtual
 source .venv/bin/activate
@@ -96,19 +117,35 @@ source .venv/bin/activate
 # Atualizar pip para a versão mais recente
 python -m pip install --upgrade pip
 
-# Instalar todas as dependências listadas no arquivo requirements.txt
+# Instalar todas as dependências
 pip install -r requirements.txt
 ```
 
-Lista de dependências principais (versões atualizadas):
-- **mem0ai**: Biblioteca para gerenciamento de memória vetorial (suporte à versão mais recente)
-- **openai**: Cliente oficial da OpenAI para Python (≥ 1.33.0)
-- **PyQt6**: Framework para interface gráfica (≥ 6.8.1)
-- **supabase**: Cliente Supabase para Python (≥ 2.13.0)
-- **pgvector**: Extensão para armazenamento e busca vetorial (≥ 0.3.6)
-- **vecs**: Abstração para bancos de dados vetoriais (≥ 0.4.5)
-- **colorama**: Para formatação colorida no terminal (≥ 0.4.6)
-- **tqdm**: Para barras de progresso no terminal (≥ 4.67.1)
+#### Dependências Principais:
+- **mem0ai** (≥ 0.1.65): Biblioteca para gerenciamento de memória vetorial
+- **openai** (≥ 1.33.0): Cliente oficial da OpenAI para Python
+- **PyQt6** (≥ 6.5.0): Framework para interface gráfica
+- **supabase** (≥ 2.0.0): Cliente Supabase para Python
+- **pgvector** (≥ 0.3.0): Extensão para armazenamento e busca vetorial
+- **vecs** (≥ 0.3.1): Abstração para bancos de dados vetoriais
+
+#### Dependências Específicas do Sistema Operacional:
+
+**Windows:**
+- Para sistemas Windows, todas as dependências são instaladas automaticamente com o comando acima.
+
+**macOS:**
+```bash
+# Se ocorrer erro com PyQt6 no macOS, pode ser necessário instalar o Qt:
+brew install qt
+```
+
+**Linux (Ubuntu/Debian):**
+```bash
+# Instalar dependências do sistema para o PyQt6
+sudo apt update
+sudo apt install python3-dev libxcb-xinerama0 libgl1-mesa-glx
+```
 
 ### 5. Configure as Variáveis de Ambiente
 
@@ -127,7 +164,7 @@ Abra o arquivo `.env` em um editor de texto e preencha com suas credenciais:
 ```ini
 # Configuração da OpenAI
 OPENAI_API_KEY=sua_chave_api_aqui
-OPENAI_MODEL=gpt-4o-mini
+OPENAI_MODEL=gpt-4o-mini         # Recomendado para melhor desempenho
 OPENAI_EMBEDDING_MODEL=text-embedding-3-small
 
 # Configuração do Supabase para armazenamento vetorial
@@ -139,13 +176,13 @@ SUPABASE_KEY=sua_chave_anon_aqui
 SUPABASE_SERVICE_KEY=sua_chave_service_aqui
 
 # Configurações adicionais
-ALLOW_ACCOUNT_CREATION=true  # Define se novos usuários podem se registrar
-REQUIRE_EMAIL_CONFIRMATION=false  # Define se é necessário confirmar e-mail
+ALLOW_ACCOUNT_CREATION=true      # true: permite registro de novos usuários
+REQUIRE_EMAIL_CONFIRMATION=false # false: não requer confirmação de email
 
 # Configurações de log e interface
-LOG_LEVEL=INFO  # Nível de detalhamento dos logs (DEBUG, INFO, WARNING, ERROR)
-GUI_THEME=dark  # Tema da interface (light, dark, system)
-GUI_LANG=pt-br  # Idioma da interface (pt-br, en-us)
+LOG_LEVEL=INFO                   # Opções: DEBUG, INFO, WARNING, ERROR
+GUI_THEME=dark                   # Opções: light, dark, system
+GUI_LANG=pt-br                   # Opções: pt-br, en-us
 
 # Configurações de desempenho
 CACHE_ENABLED=true
@@ -159,17 +196,34 @@ PERFORMANCE_SLOW_OPERATION_THRESHOLD=500
 
 ### Verificando a Configuração
 
-Antes de iniciar o aplicativo, você pode verificar se a configuração do banco de dados está correta:
+Antes de iniciar o aplicativo, verifique se a configuração do banco de dados está correta:
 
 ```bash
 # Verifica a conexão com o Supabase e configura as tabelas necessárias
 python -c "from utils.db_setup import setup_database; print(setup_database())"
 ```
 
+Se tudo estiver configurado corretamente, você verá `True` como saída.
+
+### Problemas Comuns na Configuração
+
+1. **Erro de conexão com o Supabase**:
+   - Verifique se a URL e as chaves estão corretas
+   - Verifique se o endereço IP está liberado nas configurações do Supabase
+
+2. **Erro com pgvector**:
+   - Verifique se a extensão pgvector está instalada no projeto Supabase
+   - Execute a SQL query para habilitar: `CREATE EXTENSION IF NOT EXISTS vector;`
+
+3. **Erro de autenticação OpenAI**:
+   - Verifique se a chave API está correta e não expirou
+   - Verifique se há limite de créditos na sua conta OpenAI
+
 ### Iniciando o Aplicativo
 
+Com o ambiente virtual ativado, execute:
+
 ```bash
-# Com o ambiente virtual ativado
 python main.py
 ```
 
@@ -180,39 +234,54 @@ python main.py
 3. Após o login bem-sucedido, você será direcionado para a interface de chat
 4. O aplicativo criará automaticamente as coleções necessárias para armazenar memórias
 
-## 🔄 Processo de Atualização
+### Uso do Sistema
 
-Caso precise atualizar para uma nova versão do aplicativo:
+1. **Interface de Chat**: Digite suas mensagens na caixa de texto e pressione Enter ou clique no botão enviar
+2. **Visualização de Memórias**: No painel lateral direito, você pode ver as memórias que o sistema utilizou
+3. **Configurações**: Acesse as configurações através do botão de engrenagem no canto superior direito
+4. **Limpar Memórias**: Use o botão "Limpar Memórias" para remover todo o histórico de conversas
+
+## 🔄 Atualizações e Manutenção
+
+Para atualizar o aplicativo para uma nova versão:
 
 ```bash
 # Navegue até o diretório do projeto
-cd voxy-mem0-v2
+cd voxy-mem0-v3
 
 # Ative o ambiente virtual
-# No Windows (PowerShell)
-.\.venv\Scripts\Activate.ps1
-# Ou no macOS/Linux
+# Windows (PowerShell):
+.\.venv\Scripts\Activate
+# macOS/Linux:
 source .venv/bin/activate
 
-# Atualize o repositório (se estiver usando git)
+# Atualize o repositório
 git pull
 
 # Atualize as dependências
 pip install -r requirements.txt --upgrade
 ```
 
+### Backup e Restauração de Dados
+
+Suas memórias e configurações são armazenadas no Supabase. Para fazer backup:
+
+1. Acesse o painel do Supabase
+2. Vá para "Database" > "Backups"
+3. Clique em "Create backup" para um backup manual
+
+Para restaurar, use a mesma seção para aplicar um backup existente.
+
 ## 📂 Estrutura do Projeto
 
-A estrutura do projeto foi organizada seguindo as melhores práticas:
+O projeto segue uma estrutura organizada para fácil manutenção:
 
 ```
-voxy-mem0-v2/
+voxy-mem0-v3/
 │
 ├── assets/              # Recursos estáticos (imagens, ícones)
 ├── logs/                # Arquivos de log gerados pela aplicação
 ├── scripts/             # Scripts utilitários para testes e manutenção
-│   ├── performance_test.py  # Teste de desempenho para cache
-│   └── run_tests.py         # Utilitário para executar testes
 ├── tests/               # Testes automatizados
 ├── ui/                  # Componentes da interface gráfica
 │   ├── __init__.py
@@ -236,236 +305,78 @@ voxy-mem0-v2/
 
 ## 🔧 Configuração Avançada
 
-### Personalizando a Memória Vetorial
-
-O arquivo `utils/memory_manager.py` contém a implementação da memória vetorial. Os principais métodos são:
-
-- `add_memory`: Adiciona uma nova memória para um usuário
-- `retrieve_memories`: Recupera memórias relevantes para uma consulta
-- `clear_memories`: Limpa todas as memórias de um usuário
-- `process_message`: Processa uma mensagem do usuário e gera uma resposta
-
-Para personalizar os parâmetros de embeddings ou ajustar a recuperação de memória, edite este arquivo.
-
 ### Personalizando o Prompt do Sistema
 
-O Voxy-Mem0-v2 permite que cada usuário defina seu próprio prompt do sistema através da interface gráfica:
+Você pode personalizar o comportamento do assistente editando o prompt do sistema:
 
-1. Clique no botão "Configurações" na barra de ferramentas
-2. Edite o texto no diálogo de configuração do prompt do sistema
-3. Clique em "Salvar" para persistir suas alterações
+1. Faça login no aplicativo
+2. Clique no ícone de configurações (⚙️)
+3. Selecione "Configurar Prompt do Sistema"
+4. Edite o prompt conforme necessário
+5. Clique em "Salvar"
 
-Os prompts personalizados são armazenados na tabela `user_prompts` no Supabase e são usados automaticamente em todas as conversas futuras. Isso permite personalizar completamente o comportamento, tom e instruções do assistente.
+### Ajustando Parâmetros de Memória
 
-Se nenhum prompt personalizado for definido, o sistema utilizará um prompt padrão definido no código.
+Para ajustar como as memórias são recuperadas, edite as seguintes variáveis no arquivo `.env`:
 
-### Configuração do Sistema de Logging
-
-O Voxy-Mem0-v2 inclui um sistema de logging avançado com formatação colorida e informativos no terminal. Você pode ajustar o nível de detalhe dos logs através da variável de ambiente `LOG_LEVEL`:
-
-- **DEBUG**: Mostra todas as mensagens, incluindo detalhes de desenvolvimento
-- **INFO**: Mostra mensagens informativas gerais (padrão)
-- **WARNING**: Mostra apenas avisos e erros
-- **ERROR**: Mostra apenas erros
-
-O sistema também inclui monitoramento de desempenho para identificar operações lentas, com as seguintes configurações:
-
-- **PERFORMANCE_MONITORING**: Ativa/desativa o monitoramento (true/false)
-- **PERFORMANCE_SLOW_OPERATION_THRESHOLD**: Limite em ms para considerar uma operação como lenta
-
-### Configuração do Sistema de Cache
-
-Para melhorar o desempenho, o sistema utiliza cache LRU (Least Recently Used) para armazenar resultados de consultas frequentes:
-
-- **CACHE_ENABLED**: Ativa/desativa o sistema de cache (true/false)
-- **CACHE_SIZE**: Número máximo de consultas armazenadas em cache
-- **CACHE_TTL**: Tempo de vida dos itens no cache (em segundos)
-
-## 🔍 Solução de Problemas
-
-### Problemas de Conexão com Supabase
-
-Se encontrar erros de conexão com o Supabase, verifique:
-
-1. Se as credenciais no arquivo `.env` estão corretas
-2. Se a extensão pgvector está ativada no projeto Supabase
-3. Se o firewall não está bloqueando as conexões
-
-Mensagem de erro típica:
-```
-Erro ao configurar banco de dados: psycopg2.OperationalError: connection to server at "db.xxxxx.supabase.co" failed
+```ini
+# Configurações da memória vetorial
+MEM0_COLLECTION_NAME=voxy_memories
+MEM0_MAX_RESULTS=5             # Quantidade de memórias a recuperar
+MEM0_DIMENSION=1536            # Dimensão dos vetores (depende do modelo)
+MEM0_SIMILARITY_THRESHOLD=0.8  # Limiar para considerar memórias relevantes
 ```
 
-### Problemas com a API da OpenAI
+### Configuração para Diferentes Modelos da OpenAI
 
-Se encontrar erros ao chamar a API da OpenAI, verifique:
+O sistema funciona com diferentes modelos da OpenAI. Recomendamos:
 
-1. Se a chave de API no arquivo `.env` está correta e ativa
-2. Se o modelo especificado em `OPENAI_MODEL` está disponível na sua conta
-3. Se há créditos suficientes na sua conta OpenAI
+- **GPT-4o-mini**: Melhor equilíbrio entre custo e qualidade (padrão recomendado)
+- **GPT-3.5-turbo**: Opção econômica para uso intensivo
+- **GPT-4-turbo**: Melhor qualidade para casos que exigem mais capacidade
 
-Mensagem de erro típica:
-```
-Erro ao obter resposta do modelo: Error code: 401 - Incorrect API key provided
-```
+Para alterar o modelo, edite a variável `OPENAI_MODEL` no arquivo `.env`.
 
-### Problemas com a Interface Gráfica
+## 📚 Solução de Problemas
 
-Se a interface gráfica não iniciar corretamente:
+### Problemas Comuns e Soluções
 
-1. Verifique se o PyQt6 está instalado corretamente: `pip install PyQt6 --upgrade`
-2. Em sistemas Linux, certifique-se de que o X server está rodando
-3. Em sistemas macOS, certifique-se de que o Python tem permissão para acessar a interface gráfica
+1. **Aplicativo não inicia**:
+   - Verifique se o ambiente virtual está ativado
+   - Verifique se todas as dependências estão instaladas
+   - Verifique os logs em `logs/` para mais detalhes
 
-### Para mais ajuda
+2. **Erro de autenticação**:
+   - Verifique se as credenciais do Supabase estão corretas
+   - Verifique se o arquivo `.env` foi configurado corretamente
 
-Se precisar de mais ajuda, verifique os logs no diretório `logs/` para informações detalhadas sobre erros específicos.
+3. **Erros com a memória vetorial**:
+   - Verifique se a extensão pgvector está ativa no Supabase
+   - Execute o comando de verificação de configuração mencionado anteriormente
 
-## 📝 Changelog (Últimas Alterações)
+4. **Interface gráfica com problemas de exibição**:
+   - Em ambientes Linux, instale as dependências necessárias para o Qt
+   - Em macOS, verifique se o Qt foi instalado corretamente
 
-### Versão 2.3.0
-- Implementado sistema de logging colorido com formatação avançada
-- Adicionado sistema de barras de progresso para operações demoradas
-- Corrigido problema com a API do mem0ai para compatibilidade com versões mais recentes
-- Melhorado o sistema de cache para resposta mais rápidas
-- Implementado monitoramento de desempenho para identificar gargalos
+### Obtendo Suporte
 
-### Versão 2.2.0
-- Implementado sistema de prompts personalizados por usuário
-- Adicionada visualização de memórias relevantes na interface
-- Melhorada a interface gráfica com nova barra de ferramentas
-- Corrigidos problemas de autenticação com Supabase
+Se encontrar problemas não cobertos nesta documentação:
 
-## 📜 Licença
+1. Verifique os logs em `logs/` para mensagens de erro detalhadas
+2. Abra uma issue no repositório GitHub
+3. Inclua as mensagens de erro e os passos para reproduzir o problema
 
-Este projeto está licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.
+## 🔐 Segurança e Privacidade
 
-## 🙏 Agradecimentos
+- Todas as senhas são armazenadas de forma segura (hash + salt) no Supabase
+- As comunicações com OpenAI e Supabase são feitas via HTTPS
+- Nenhum dado é compartilhado com terceiros além dos serviços necessários (OpenAI/Supabase)
+- O sistema armazena histórico de conversas para personalizar respostas futuras
 
-- [OpenAI](https://openai.com) pelo acesso à API GPT
-- [Supabase](https://supabase.com) pela infraestrutura de banco de dados vetorial
-- [Mem0ai](https://github.com/mem0ai/mem0) pela biblioteca de gerenciamento de memória
-- [PyQt6](https://www.riverbankcomputing.com/software/pyqt/) pelo framework de interface gráfica
+## 📄 Licença
 
-## 🧪 Testes Automatizados
+Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para detalhes.
 
-O projeto inclui uma suíte completa de testes automatizados para garantir a qualidade e estabilidade do código. Os testes estão localizados no diretório `tests/` e utilizam o framework pytest.
+---
 
-### Executando os Testes
-
-Para executar todos os testes:
-
-```bash
-# Com o ambiente virtual ativado
-python -m pytest
-```
-
-Para executar o script auxiliar que facilita a seleção de testes específicos:
-
-```bash
-# No Windows (PowerShell)
-python scripts/run_tests.py --type all --coverage --verbose
-
-# No Linux/macOS
-python scripts/run_tests.py --type all --coverage --verbose
-```
-
-### Tipos de Testes
-
-Os testes estão organizados em categorias:
-
-- **Testes Unitários**: Testes isolados para cada componente
-  ```bash
-  python scripts/run_tests.py --type unit
-  ```
-
-- **Testes de Interface**: Testes da interface gráfica usando pytest-qt
-  ```bash
-  python scripts/run_tests.py --type gui
-  ```
-
-- **Testes de Integração**: Testes que verificam a integração com serviços externos
-  ```bash
-  python scripts/run_tests.py --type integration
-  ```
-
-### Relatórios de Cobertura
-
-Os testes geram relatórios de cobertura que ajudam a identificar partes do código que não estão sendo testadas:
-
-```bash
-python scripts/run_tests.py --coverage
-```
-
-Um relatório HTML será gerado no diretório `htmlcov/`. Abra o arquivo `index.html` para visualizar a cobertura detalhada.
-
-### Estado Atual dos Testes
-
-A cobertura atual dos testes é aproximadamente:
-- `utils/auth.py`: 54% de cobertura
-- `utils/db_setup.py`: 55% de cobertura
-- `utils/memory_manager.py`: 49% de cobertura
-- `ui/chat_window.py`: 77% de cobertura
-- `ui/login_window.py`: 54% de cobertura
-- **Total**: 61% de cobertura
-
-Alguns testes estão marcados como ignorados por razões específicas:
-1. Alguns testes de interface gráfica complexos que requerem mocks adicionais.
-
-Para executar um teste específico:
-
-```bash
-# Executar um arquivo de teste específico
-python scripts/run_tests.py --type unit --file test_memory_manager.py
-
-# Ou diretamente com pytest
-python -m pytest tests/test_memory_manager.py::TestMemoryManager::test_init
-```
-
-Para mais informações sobre os testes, consulte a documentação em `tests/README.md`.
-
-## 🚀 Desenvolvimento Futuro
-
-Este projeto está em constante evolução. Abaixo estão as funcionalidades e melhorias planejadas para as próximas versões.
-
-### Próximas Funcionalidades Planejadas
-
-#### Curto Prazo (próxima versão)
-- **Exportação e Importação de Conversas**: Permitir que usuários exportem e importem históricos de conversas em formatos comuns (JSON, TXT, PDF)
-- **Temas Adicionais**: Implementação de mais opções de temas além do escuro atual (claro, sistema, alto contraste)
-
-#### ✅ Funcionalidades Recentemente Implementadas
-- **Gerenciamento de Memórias na Interface**: Implementação de botão para limpar memórias diretamente na interface do chat
-- **Visualização Avançada de Memórias**: Exibição das memórias utilizadas para gerar cada resposta, com indicadores precisos de relevância (porcentagem)
-- **Diálogo de Todas as Memórias**: Opção para visualizar detalhadamente todas as memórias que influenciaram uma resposta específica
-
-#### Médio Prazo
-- **Agentes Personalizados**: Criar diferentes perfis de assistente com diferentes personalidades e áreas de conhecimento
-- **Integração com Mais Modelos de IA**: Suporte a modelos alternativos como Claude, Llama, Gemini além da OpenAI
-- **Sistema de Plugins**: Arquitetura para extensões que adicionam funcionalidades como pesquisa web, visualização de dados, etc.
-- **Interface em Múltiplos Idiomas**: Suporte completo a mais idiomas além do português
-
-#### Longo Prazo
-- **Versão Web**: Desenvolvimento de uma versão acessível via navegador
-- **Compartilhamento Seguro de Conhecimento**: Permitir compartilhar memórias específicas entre usuários autorizados
-- **Processamento de Voz**: Integração com reconhecimento e síntese de voz para interação por áudio
-- **Assistente Proativo**: Capacidade de iniciar conversas baseadas em padrões, lembretes ou eventos programados
-
-### Melhorias Técnicas
-
-- **Aumentar Cobertura de Testes**: Atingir pelo menos 80% de cobertura de código em todos os módulos
-- ✅ **Otimização de Desempenho**: Implementação de sistema de cache e monitoramento para melhorar a velocidade de recuperação de memórias
-- **Paralelização de Operações**: Implementar processamento assíncrono para múltiplas consultas simultâneas
-- **Refatoração de Classes**: Melhorar a organização e modularização, especialmente da classe ChatWindow
-- **Suporte a Múltiplos Bancos de Dados**: Adicionar opções além do Supabase (PostgreSQL direto, MongoDB, etc.)
-- **Melhoria na Segurança**: Implementação de criptografia de ponta a ponta para mensagens e memórias sensíveis
-
-### Contribuições Bem-vindas
-
-Estamos abertos a contribuições nas seguintes áreas:
-- Implementação de novas funcionalidades alinhadas com o roadmap
-- Melhorias na interface gráfica e experiência do usuário
-- Otimizações de desempenho e segurança
-- Testes e documentação adicionais
-
-Se você tem interesse em contribuir, por favor verifique as issues abertas ou crie uma nova descrevendo sua proposta. 
+Desenvolvido com ❤️ pela equipe Voxy
