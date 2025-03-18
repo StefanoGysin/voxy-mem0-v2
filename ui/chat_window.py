@@ -42,6 +42,8 @@ THEME = {
     "system_message_border": "#7E3AF2", # Borda da mensagem do sistema
     "error_message_bg": "#4C1D24",     # Fundo da mensagem de erro
     "error_message_border": "#F87171", # Borda da mensagem de erro
+    "error_text": "#F87171",           # Texto de erro
+    "success_text": "#4ADE80",         # Texto de sucesso
     "button_primary": "#2563EB",       # Botão primário
     "button_primary_hover": "#1D4ED8", # Botão primário hover
     "button_primary_text": "#F8FAFC",  # Texto do botão primário

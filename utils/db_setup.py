@@ -114,7 +114,10 @@ class DatabaseSetup:
             db = vecs.create_client(self.database_url)
             
             # Obtém as coleções existentes
-            collections = db.list_collections()
+            collections_objs = db.list_collections()
+            
+            # Converte os objetos Collection para seus nomes (strings)
+            collections = [collection.name for collection in collections_objs]
             
             if collections:
                 logger.info(f"Coleções de vetores encontradas: {', '.join(collections)}")
