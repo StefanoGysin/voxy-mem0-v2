@@ -1,4 +1,4 @@
-# Voxy-Mem0-v3: Assistente com Memória Vetorial e Interface Gráfica
+# Voxy: Assistente com Memória Vetorial e Interface Gráfica
 
 ![Versão](https://img.shields.io/badge/versão-2.3.0-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.12%2B-green.svg)
@@ -7,7 +7,7 @@
 
 ## 📋 Visão Geral
 
-Voxy-Mem0-v3 é uma evolução avançada do assistente conversacional Voxy-Mem0, com interface gráfica moderna construída com PyQt6 e sistema de autenticação integrado com Supabase. Desenvolvido com a biblioteca [Mem0ai](https://github.com/mem0ai/mem0) e integrado com a API da OpenAI, este assistente oferece uma experiência de conversação personalizada ao armazenar e recuperar conversas anteriores em uma memória vetorial persistente.
+Voxy é um assistente conversacional avançado, com interface gráfica moderna construída com PyQt6 e sistema de autenticação integrado com Supabase. Desenvolvido com a biblioteca [Mem0ai](https://github.com/mem0ai/mem0) e integrado com a API da OpenAI, este assistente oferece uma experiência de conversação personalizada ao armazenar e recuperar conversas anteriores em uma memória vetorial persistente.
 
 ## ✨ Funcionalidades
 
@@ -50,7 +50,7 @@ Voxy-Mem0-v3 é uma evolução avançada do assistente conversacional Voxy-Mem0,
 #### OpenAI API
 1. Crie uma conta em [platform.openai.com](https://platform.openai.com) se ainda não tiver
 2. Navegue até "API keys" no painel e clique em "Create new secret key"
-3. Dê um nome descritivo à sua chave (ex: "Voxy-Mem0")
+3. Dê um nome descritivo à sua chave (ex: "Voxy")
 4. Copie a chave gerada imediatamente (você não poderá vê-la novamente depois)
 
 #### Supabase
@@ -66,8 +66,8 @@ Voxy-Mem0-v3 é uma evolução avançada do assistente conversacional Voxy-Mem0,
 ### 2. Clone o Repositório
 
 ```bash
-git clone https://github.com/SeuUsuario/voxy-mem0-v3.git
-cd voxy-mem0-v3
+git clone https://github.com/SeuUsuario/voxy-mem0-v3.git # TODO: Atualizar URL se o repositório for renomeado
+cd voxy # Assumindo que o diretório será renomeado para 'voxy'
 ```
 
 ### 3. Configure o Ambiente Virtual
@@ -247,7 +247,7 @@ Para atualizar o aplicativo para uma nova versão:
 
 ```bash
 # Navegue até o diretório do projeto
-cd voxy-mem0-v3
+cd voxy
 
 # Ative o ambiente virtual
 # Windows (PowerShell):
@@ -277,7 +277,7 @@ Para restaurar, use a mesma seção para aplicar um backup existente.
 O projeto segue uma estrutura organizada para fácil manutenção:
 
 ```
-voxy-mem0-v3/
+voxy/
 │
 ├── assets/              # Recursos estáticos (imagens, ícones)
 ├── logs/                # Arquivos de log gerados pela aplicação

@@ -126,7 +126,9 @@ class TestDatabaseSetup:
     def test_get_vector_collections(self, mock_env_vars, mock_vecs):
         """Testa a obtenção das coleções de vetores."""
         # Configura
-        mock_vecs.list_collections.return_value = ["voxy_memories"]
+        mock_collection = MagicMock()
+        mock_collection.name = "voxy_memories"
+        mock_vecs.list_collections.return_value = [mock_collection]
         
         # Executa
         db_setup = DatabaseSetup()

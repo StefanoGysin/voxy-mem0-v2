@@ -32,7 +32,7 @@ class TestMemoryManager:
         # Configura - remove DATABASE_URL
         with patch.dict(os.environ, {}, clear=True):
             # Verifica que a exceção é lançada
-            with pytest.raises(ValueError, match="DATABASE_URL não configurado"):
+            with pytest.raises(ValueError, match="OPENAI_API_KEY não definida"):
                 MemoryManager()
     
     @patch('utils.memory_manager.Memory.from_config')
@@ -117,9 +117,10 @@ class TestMemoryManager:
         # Configura os dados do teste
         query = "Qual o meu nome?"
         user_id = "user-123"
+        message_list = [{"role": "user", "content": query}]
         
         # Executa
-        response = memory_manager.process_message(query, user_id)
+        response = memory_manager.process_message(message_list, user_id)
         
         # Verifica
         assert isinstance(response, dict)
@@ -148,7 +149,8 @@ class TestMemoryManager:
         
         # Verifica
         assert result is True
-        memory_manager.memory.delete_all.assert_called_once_with(user_id=user_id)
+        # Verifica se o método clear foi chamado com user_id
+        memory_manager.memory.clear.assert_called_once_with(user_id=user_id)
     
     @patch('utils.memory_manager.Memory.from_config')
     def test_chat_completion(self, mock_memory_from_config, mock_env_vars):

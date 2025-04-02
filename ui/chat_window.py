@@ -1,5 +1,5 @@
 """
-Janela de chat para o aplicativo Voxy-Mem0-v2
+Janela de chat para o aplicativo Voxy
 """
 
 import os
@@ -231,7 +231,7 @@ class ChatWindow(QMainWindow):
         self.user_id = user_id
         
         # Configuração da janela
-        self.setWindowTitle("Voxy-Mem0 v2 - Chat")
+        self.setWindowTitle("Voxy - Chat")
         self.setMinimumSize(900, 700)
         
         # Inicialização dos serviços
@@ -267,7 +267,7 @@ class ChatWindow(QMainWindow):
             self._message_history = []
             
             # Adiciona mensagem de boas-vindas
-            self._add_system_message("Bem-vindo ao Voxy-Mem0! Como posso ajudar você hoje?")
+            self._add_system_message("Bem-vindo ao Voxy! Como posso ajudar você hoje?")
                 
         except Exception as e:
             logger.error(f"Erro ao inicializar serviços: {str(e)}")

@@ -54,7 +54,7 @@ class TestLoginWindow:
         window, _ = login_window
         
         # Verifica que a janela foi configurada corretamente
-        assert window.windowTitle() == "Voxy-Mem0 - Login"
+        assert window.windowTitle() == "Voxy - Login"
         assert hasattr(window, 'email_input')
         assert hasattr(window, 'password_input')
         assert hasattr(window, 'login_button')

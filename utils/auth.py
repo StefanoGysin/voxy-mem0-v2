@@ -1,5 +1,5 @@
 """
-Módulo de autenticação para o Voxy-Mem0-v2
+Módulo de autenticação para o Voxy
 Gerencia autenticação de usuários com o Supabase
 """
 

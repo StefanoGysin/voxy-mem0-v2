@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Aplicativo Voxy-Mem0-v2 - Assistente com Memória Vetorial
-Interface gráfica para o assistente Voxy-Mem0 com autenticação e memória persistente.
+Aplicativo Voxy - Assistente com Memória Vetorial
+Interface gráfica para o assistente Voxy com autenticação e memória persistente.
 """
 
 import os
@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from PyQt6.QtWidgets import QApplication, QMessageBox, QSplashScreen
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QPixmap, QFont
+from PyQt6.QtGui import QPixmap, QFont, QIcon
 import colorama
 
 # Inicializa colorama para suporte de cores em todos os terminais
@@ -121,7 +121,7 @@ class ColoredFormatter(logging.Formatter):
 log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
 os.makedirs(log_dir, exist_ok=True)
 
-log_file = os.path.join(log_dir, f"voxy-mem0-v2_{datetime.now().strftime('%Y%m%d')}.log")
+log_file = os.path.join(log_dir, f"voxy_{datetime.now().strftime('%Y%m%d')}.log")
 
 # Formatadores
 file_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -151,7 +151,7 @@ terminal_handler.addFilter(add_terminal_format)
 
 # Logger principal da aplicação
 logger = logging.getLogger("voxy-app")
-logger.info(f"Sistema de log inicializado - Voxy-Mem0-v2")
+logger.info(f"Sistema de log inicializado - Voxy")
 
 # Importa módulos do projeto
 from ui.login_window import LoginWindow
@@ -165,7 +165,7 @@ __author__ = "Voxy Team"
 
 class VoxyApp:
     """
-    Classe principal do aplicativo Voxy-Mem0-v2
+    Classe principal do aplicativo Voxy
     Gerencia as janelas e o fluxo de autenticação/chat
     """
     def __init__(self):
@@ -180,8 +180,9 @@ class VoxyApp:
         
         # Inicializa a aplicação Qt
         self.app = QApplication(sys.argv)
-        self.app.setApplicationName("Voxy-Mem0")
+        self.app.setApplicationName("Voxy")
         self.app.setApplicationVersion(__version__)
+        self.app.setWindowIcon(QIcon("assets/icons/check.png"))
         
         # Estilo global
         self.set_global_style()
@@ -250,78 +251,59 @@ class VoxyApp:
         """)
     
     def show_splash_screen(self):
-        """
-        Mostra a tela de splash durante a inicialização
-        """
-        # Se houver um arquivo de splash, use-o
-        splash_path = os.path.join("assets", "splash.png")
-        
-        if os.path.exists(splash_path):
-            pixmap = QPixmap(splash_path)
-        else:
-            # Cria um pixmap vazio
-            pixmap = QPixmap(400, 300)
-            pixmap.fill(Qt.GlobalColor.white)
-        
-        splash = QSplashScreen(pixmap, Qt.WindowType.WindowStaysOnTopHint)
-        
-        # Adiciona texto ao splash
-        splash.showMessage(
-            f"Voxy-Mem0 v{__version__}\nInicializando...",
-            Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignCenter,
-            Qt.GlobalColor.black
-        )
-        
-        splash.show()
-        self.app.processEvents()
-        
-        # Configuração do banco de dados
-        logger.info("Verificando configuração do banco de dados...")
-        database_ready = setup_database()
-        
-        if not database_ready:
-            splash.close()
-            QMessageBox.critical(
-                None,
-                "Erro de Configuração",
-                "Não foi possível configurar o banco de dados.\n"
-                "Verifique os logs e as configurações no arquivo .env."
-            )
-            return False
-        
-        # Dá tempo para mostrar o splash
-        QTimer.singleShot(1500, splash.close)
-        
-        return True
-    
-    def start(self):
-        """
-        Inicia a aplicação
-        """
+        """Mostra a tela de carregamento."""
+        # Tenta carregar um splash screen, se não encontrar usa um fallback
+        splash_path = "assets/splash.png" # Defina o caminho para sua splash screen
         try:
-            logger.info(f"Iniciando Voxy-Mem0-v2 v{__version__}")
-            
-            # Mostra a tela de splash
-            if not self.show_splash_screen():
-                return 1
-            
+            if os.path.exists(splash_path):
+                splash_pix = QPixmap(splash_path)
+            else:
+                # Fallback: Cria um QPixmap vazio ou com uma cor sólida
+                splash_pix = QPixmap(400, 300)
+                splash_pix.fill(Qt.GlobalColor.darkGray) # Exemplo de cor de fallback
+                logger.warning(f"Arquivo de splash screen não encontrado em {splash_path}. Usando fallback.")
+
+            self.splash = QSplashScreen(splash_pix, Qt.WindowType.WindowStaysOnTopHint)
+            self.splash.setMask(splash_pix.mask())
+            self.splash.showMessage(
+                f"Voxy\nInicializando...",
+                Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignCenter,
+                Qt.GlobalColor.white
+            )
+            self.splash.show()
+            QTimer.singleShot(2500, self.splash.close)
+        except Exception as e:
+            logger.error(f"Erro ao carregar splash screen: {e}")
+            # Continua a execução mesmo sem splash screen
+    
+    def run(self):
+        """Executa o loop principal da aplicação."""
+        logger.info(f"Iniciando Voxy")
+        self.show_splash_screen() # Tenta mostrar o splash screen
+
+        try:
+            # Verifica e configura o banco de dados
+            logger.info("Verificando configuração do banco de dados...")
+            if not setup_database():
+                QMessageBox.critical(
+                    None,
+                    "Erro de Configuração",
+                    "Não foi possível configurar o banco de dados.\n"
+                    "Verifique os logs e as configurações no arquivo .env."
+                )
+                return 1 # Sai se o DB falhar
+
             # Inicializa a janela de login
             self.login_window = LoginWindow()
             self.login_window.login_successful.connect(self.on_login_successful)
             self.login_window.show()
-            
+
             # Executa o loop principal
             return self.app.exec()
-            
+
         except Exception as e:
-            logger.error(f"Erro ao iniciar aplicação: {str(e)}")
-            logger.error(traceback.format_exc())
-            QMessageBox.critical(
-                None,
-                "Erro Fatal",
-                f"Ocorreu um erro ao iniciar a aplicação:\n{str(e)}\n\n"
-                "Verifique os logs para mais detalhes."
-            )
+            logger.error(f"Erro fatal durante a execução: {e}", exc_info=True)
+            QMessageBox.critical(None, "Erro Fatal", f"Ocorreu um erro inesperado: {e}")
             return 1
     
     def on_login_successful(self, user_id):
@@ -389,7 +371,7 @@ def main():
     Função principal do aplicativo
     """
     app = VoxyApp()
-    return app.start()
+    return app.run()
 
 if __name__ == "__main__":
     sys.exit(main()) 

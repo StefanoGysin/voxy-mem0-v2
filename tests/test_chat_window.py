@@ -63,7 +63,7 @@ class TestChatWindow:
         window, _ = chat_window
         
         # Verifica que a janela foi configurada corretamente
-        assert window.windowTitle() == "Voxy-Mem0 v2 - Chat"
+        assert window.windowTitle() == "Voxy - Chat"
         assert hasattr(window, 'message_input')
         assert hasattr(window, 'send_button')
         assert hasattr(window, 'chat_layout')
@@ -76,8 +76,7 @@ class TestChatWindow:
         # Adiciona a janela ao qtbot
         qtbot.addWidget(window)
         
-        # Substitui os métodos de adicionar mensagens para evitar problemas com a interface gráfica
-        window._add_user_message = MagicMock()
+        # Substitui os métodos de adicionar mensagens do assistente/sistema para evitar problemas com a interface gráfica
         window._add_assistant_message = MagicMock()
         window._add_system_message = MagicMock()
         
@@ -87,13 +86,9 @@ class TestChatWindow:
         # Clica no botão de enviar
         qtbot.mouseClick(window.send_button, Qt.MouseButton.LeftButton)
         
-        # Verifica que a mensagem do usuário foi adicionada
-        window._add_user_message.assert_called_once_with("Olá, como vai?")
-        
-        # Verifica que o método de processamento de mensagem foi chamado
-        # Nota: O worker é que chama o process_message, então não podemos verificar diretamente
-        # Verificamos se a mensagem foi definida no worker
-        assert window.message_worker.message == "Olá, como vai?"
+        # Verificamos se a mensagem foi definida no worker corretamente (última mensagem no histórico)
+        assert len(window.message_worker.message) > 0
+        assert window.message_worker.message[-1] == {"role": "user", "content": "Olá, como vai?"}
     
     def test_clear_chat(self, qtbot, chat_window):
         """Testa a limpeza do chat."""

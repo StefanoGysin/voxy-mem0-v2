@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script para execução de testes do Voxy-Mem0-v2
+Script para execução de testes do Voxy
 Este script facilita a execução dos testes com diferentes configurações.
 """
 
@@ -17,7 +17,7 @@ if project_root not in sys.path:
 
 def parse_args():
     """Analisa os argumentos da linha de comando."""
-    parser = argparse.ArgumentParser(description='Executa testes do Voxy-Mem0-v2')
+    parser = argparse.ArgumentParser(description='Executa testes do Voxy')
     
     parser.add_argument('--type', choices=['all', 'unit', 'gui', 'integration'],
                         default='all', help='Tipo de testes a executar')

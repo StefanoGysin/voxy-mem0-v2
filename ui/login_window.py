@@ -1,5 +1,5 @@
 """
-Janela de login para o aplicativo Voxy-Mem0-v2
+Janela de login para o aplicativo Voxy
 """
 
 import os
@@ -107,7 +107,7 @@ class LoginWindow(QMainWindow):
         super().__init__()
         
         # Configurações iniciais
-        self.setWindowTitle("Voxy-Mem0 - Login")
+        self.setWindowTitle("Voxy - Login")
         self.setMinimumSize(450, 620)
         self.setWindowIcon(QIcon("assets/icon.png"))
         
@@ -420,7 +420,7 @@ class LoginWindow(QMainWindow):
         
         # Adiciona os widgets ao layout de login
         # Titulo no topo do frame
-        title_label = QLabel("Voxy-Mem0")
+        title_label = QLabel("Voxy")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setFont(QFont("Segoe UI", 26, QFont.Weight.Bold))
         title_label.setStyleSheet(f"color: {THEME['accent']}; margin-bottom: 15px;")

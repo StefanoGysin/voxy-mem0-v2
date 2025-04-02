@@ -1,3 +1,3 @@
 """
-Módulo de interface gráfica para o Voxy-Mem0-v2.
+Módulo de interface gráfica para o Voxy.
 """ 

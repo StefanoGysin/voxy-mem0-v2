@@ -1,5 +1,5 @@
 """
-Configurações e fixtures compartilhadas para os testes do Voxy-Mem0-v2.
+Configurações e fixtures compartilhadas para os testes do Voxy.
 """
 
 import os

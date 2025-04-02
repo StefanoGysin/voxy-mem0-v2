@@ -86,7 +86,7 @@ progress_manager = ProgressManager()
 
 class MemoryManager:
     """
-    Gerencia a memória vetorial para o assistente Voxy-Mem0.
+    Gerencia a memória vetorial para o assistente Voxy.
     Integra com a biblioteca Mem0 e OpenAI para armazenamento e recuperação de memórias.
     
     Esta classe é responsável por:

@@ -1,11 +1,16 @@
 """
-Configuração do banco de dados Supabase para o Voxy-Mem0-v2
+Configuração do banco de dados Supabase para o Voxy
+
+Este módulo contém funções para verificar e configurar as tabelas necessárias
+no banco de dados Supabase, incluindo a criação da tabela de perfis (`profiles`).
 """
 import os
 import logging
+from supabase import create_client, Client as SupabaseClient
+from dotenv import load_dotenv
+from vecs import create_client as create_vecs_client # Import específico para vecs
 import psycopg2
 from psycopg2 import sql
-from dotenv import load_dotenv
 import vecs
 
 # Configuração de logging
@@ -225,7 +230,7 @@ class DatabaseSetup:
     
     def setup_database(self):
         """
-        Configura o banco de dados para uso com o Voxy-Mem0-v2
+        Configura o banco de dados para uso com o Voxy
         
         Returns:
             bool: True se o banco de dados foi configurado com sucesso, False caso contrário
@@ -259,9 +264,11 @@ class DatabaseSetup:
         return True
 
 
-def setup_database():
+def setup_database(client: SupabaseClient = None) -> bool:
     """
-    Função de entrada para configurar o banco de dados
+    Configura o banco de dados para uso com o Voxy
+
+    Verifica se as tabelas necessárias (ex: profiles) existem e as cria se não existirem.
     
     Returns:
         bool: True se o banco de dados foi configurado com sucesso, False caso contrário

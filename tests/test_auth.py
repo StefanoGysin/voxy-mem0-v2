@@ -1,5 +1,5 @@
 """
-Testes para o módulo de autenticação do Voxy-Mem0-v2
+Testes para o módulo de autenticação do Voxy
 """
 
 import pytest
